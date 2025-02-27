@@ -11,6 +11,7 @@ django-cors-headers = "*"
 django-filter = "*"
 psycopg2-binary = "*"
 django-environ = "*"
+supabase = "*"
 
 [dev-packages]
 
