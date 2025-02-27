@@ -1,3 +1,7 @@
+import os
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .utils import upload_to_supabase
 from django.db.models import Q
 from django.http import JsonResponse
 from .utils import get_default_store
@@ -19,6 +23,10 @@ from .serializers import (CategorySerializer, ProductSerializer,
                           MessageSerializer, WishListSerializer,
                           PaymentSerializer, CartSerializer, CartItemSerializer,
                           OrderSerializer, OrderItemSerializer, HeroImageSerializer, CategoryImageSerializer)
+
+
+
+
 
 
 def load_subcategories(request):
@@ -377,3 +385,129 @@ class CategoryImageViewSet(ReadOnlyModelViewSet):
 
     def get_serializer_context(self):
         return {'category_pk': self.kwargs['category_pk']}
+
+
+@csrf_exempt
+def upload_store_logo(request):
+
+    if request.method == "POST" and request.FILES.get("image") and request.POST.get("store_id"):
+        store_id = request.POST.get("store_id")
+        try:
+            store = Store.objects.get(id=store_id)
+        except Store.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Store not found."}, status=404)
+
+        image = request.FILES["image"]
+        temp_path = f"/tmp/{image.name}"
+        with open(temp_path, "wb") as f:
+            for chunk in image.chunks():
+                f.write(chunk)
+
+        # Use a dedicated bucket for store logos, e.g., "store-logos"
+        public_url = upload_to_supabase(temp_path, bucket_name="store-logos")
+        os.remove(temp_path)
+
+        if public_url:
+            store.logo = public_url
+            store.save()
+            return JsonResponse({"success": True, "store_id": store.id, "logo": public_url})
+        else:
+            return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
+
+
+@csrf_exempt
+def upload_category_image(request):
+    """
+    Expects a POST with:
+      - category_id (in POST data)
+      - image file under key "image"
+    """
+    if request.method == "POST" and request.FILES.get("image") and request.POST.get("category_id"):
+        category_id = request.POST.get("category_id")
+        try:
+            category = Category.objects.get(id=category_id)
+        except Category.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Category not found."}, status=404)
+
+        image = request.FILES["image"]
+        temp_path = f"/tmp/{image.name}"
+        with open(temp_path, "wb") as f:
+            for chunk in image.chunks():
+                f.write(chunk)
+
+        # Use a dedicated bucket for category images, e.g., "category-images"
+        public_url = upload_to_supabase(temp_path, bucket_name="category-images")
+        os.remove(temp_path)
+
+        if public_url:
+            category_image = CategoryImage.objects.create(category=category, image=public_url)
+            return JsonResponse({"success": True, "category_image_id": category_image.id, "image": public_url})
+        else:
+            return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
+
+
+@csrf_exempt
+def upload_hero_image(request):
+    """
+    Expects a POST with:
+      - Optional: title, description in POST data
+      - Image file under key "image"
+    """
+    if request.method == "POST" and request.FILES.get("image"):
+        image = request.FILES["image"]
+        title = request.POST.get("title", "")
+        description = request.POST.get("description", "")
+
+        temp_path = f"/tmp/{image.name}"
+        with open(temp_path, "wb") as f:
+            for chunk in image.chunks():
+                f.write(chunk)
+
+        # Use a dedicated bucket for hero images, e.g., "hero-images"
+        public_url = upload_to_supabase(temp_path, bucket_name="hero-images")
+        os.remove(temp_path)
+
+        if public_url:
+            hero_image = HeroImage.objects.create(title=title, description=description, image=public_url)
+            return JsonResponse({"success": True, "hero_image_id": hero_image.id, "image": public_url})
+        else:
+            return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
+
+
+@csrf_exempt
+def upload_product_image(request):
+    """
+    Expects a POST with:
+      - product_id (in POST data)
+      - image file under key "image"
+    """
+    if request.method == "POST" and request.FILES.get("image") and request.POST.get("product_id"):
+        product_id = request.POST.get("product_id")
+        try:
+            product = Product.objects.get(id=product_id)
+        except Product.DoesNotExist:
+            return JsonResponse({"success": False, "error": "Product not found."}, status=404)
+
+        image = request.FILES["image"]
+        temp_path = f"/tmp/{image.name}"
+        with open(temp_path, "wb") as f:
+            for chunk in image.chunks():
+                f.write(chunk)
+
+        # Use a dedicated bucket for product images, e.g., "product-images"
+        public_url = upload_to_supabase(temp_path, bucket_name="product-images")
+        os.remove(temp_path)
+
+        if public_url:
+            product_image = ProductImage.objects.create(product=product, image=public_url)
+            return JsonResponse({"success": True, "product_image_id": product_image.id, "image": public_url})
+        else:
+            return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
+
+    return JsonResponse({"success": False, "error": "Invalid request."}, status=400)

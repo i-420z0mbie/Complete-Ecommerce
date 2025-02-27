@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from datetime import timedelta
 from pathlib import Path
+from supabase import create_client
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,7 +25,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-!2qcpxi71yk55hwr$x6+x5aa&rgy*ddv30x9gk@akl#rl8#4vs'
 PAYSTACK_SECRET_KEY = 'sk_live_26bcb3ba0cbe0ea6d23232e110cdb8ccd54aaadf'
 PAYSTACK_PUBLIC_KEY = 'pk_live_26a9e211194619bd267d2eb4bd034fd8394d56c6'
-
+SUPABASE_URL = "https://sigldbxinywgcbqshykm.supabase.co"
+SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpZ2xkYnhpbnl3Z2NicXNoeWttIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MDYwMjU3NiwiZXhwIjoyMDU2MTc4NTc2fQ.93UuixoNJ5gxKIV7HAKe0XPo8-bE0ds3C5szszf92GY"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -94,6 +96,15 @@ CORS_ALLOWED_ORIGINS = [
 CSRF_TRUSTED_ORIGINS = [
     "http://localhost:5173",
 ]
+
+
+supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+MEDIA_URL = f"{SUPABASE_URL}/storage/v1/object/public/"
+
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 
 
 
@@ -183,5 +194,4 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+

@@ -9,7 +9,7 @@ class Store(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='stores')
     name = models.CharField(max_length=150)
     description = models.TextField()
-    logo = models.ImageField(upload_to='store_logos', blank=True, null=True)
+    logo = models.URLField(max_length=500, blank=True, null=True)
     contact_info = models.CharField(max_length=300)
     address = models.CharField(max_length=300)
     date_created = models.DateTimeField(auto_now_add=True)
@@ -94,7 +94,7 @@ class Category(models.Model):
 
 class CategoryImage(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name='category_images')
-    image = models.ImageField(upload_to='category_images')
+    image = models.URLField(max_length=500, blank=True, null=True)
 
     objects = models.Manager()
 
@@ -102,7 +102,7 @@ class CategoryImage(models.Model):
 class HeroImage(models.Model):
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    image = models.ImageField(upload_to='hero_images/')
+    image = models.URLField(max_length=500, blank=True, null=True)
     link = models.URLField(blank=True, null=True)
     active = models.BooleanField(default=True)
     ordering = models.PositiveIntegerField(default=0)
@@ -163,7 +163,7 @@ class Product(models.Model):
 
 class ProductImage(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='product_images')
-    image = models.ImageField(upload_to='images')
+    image = models.URLField(max_length=500, blank=True, null=True)
 
 
     objects = models.Manager()
