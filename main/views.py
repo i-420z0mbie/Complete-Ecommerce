@@ -410,7 +410,7 @@ def upload_store_logo(request):
                 f.write(chunk)
 
         # Use a dedicated bucket for store logos, e.g., "store-logos"
-        public_url = upload_to_supabase(temp_path, bucket_key="store_logos")
+        public_url = upload_to_supabase(temp_path, bucket_key="store_logo")
         os.remove(temp_path)
 
         if public_url:
@@ -444,7 +444,7 @@ def upload_category_image(request):
                 f.write(chunk)
 
         # Use a dedicated bucket for category images, e.g., "category-images"
-        public_url = upload_to_supabase(temp_path, bucket_key="category_images")
+        public_url = upload_to_supabase(temp_path, bucket_key="category_image")
         os.remove(temp_path)
 
         if public_url:
@@ -474,7 +474,7 @@ def upload_hero_image(request):
                 f.write(chunk)
 
         # Use a dedicated bucket for hero images, e.g., "hero-images"
-        public_url = upload_to_supabase(temp_path, bucket_key="hero_images")
+        public_url = upload_to_supabase(temp_path, bucket_key="hero_image")
         os.remove(temp_path)
 
         if public_url:
@@ -507,7 +507,7 @@ def upload_product_image(request):
                 f.write(chunk)
 
         # Use a dedicated bucket for product images, e.g., "product-images"
-        public_url = upload_to_supabase(temp_path, bucket_key="product_images")
+        public_url = upload_to_supabase(temp_path, bucket_key="product_image")
         os.remove(temp_path)
 
         if public_url:

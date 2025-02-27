@@ -31,8 +31,9 @@ SECRET_KEY = 'django-insecure-!2qcpxi71yk55hwr$x6+x5aa&rgy*ddv30x9gk@akl#rl8#4vs
 DEBUG = False
 
 
-SUPABASE_URL = env('SUPABASE_URL')
-SUPABASE_KEY = env('SUPABASE_KEY')
+SUPABASE_URL = 'https://sigldbxinywgcbqshykm.supabase.co'
+SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpZ2xkYnhpbnl3Z2NicXNoeWttIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MDYwMjU3NiwiZXhwIjoyMDU2MTc4NTc2fQ.93UuixoNJ5gxKIV7HAKe0XPo8-bE0ds3C5szszf92GY'
+
 
 ALLOWED_HOSTS=['*']
 # Application definition
