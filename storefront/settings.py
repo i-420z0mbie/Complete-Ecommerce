@@ -29,7 +29,7 @@ environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
 SECRET_KEY = env('DJANGO_SECRET_KEY')
 DEBUG = env('DEBUG')
-ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
+# ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
 
 SUPABASE_URL = env('SUPABASE_URL')
 SUPABASE_KEY = env('SUPABASE_KEY')
@@ -79,9 +79,19 @@ SIMPLE_JWT = {
 }
 
 
-CORS_ALLOW_HEADERS = env.list('CORS_ALLOW_HEADERS')
-CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
-CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
+ALLOWED_HOSTS='localhost:5173,z0mbified-store.onrender.com'
+
+CORS_ALLOW_HEADERS= ['accept',
+                     'authorization',
+                     'content-type',
+                     'user-agent',
+                     'x-csrftoken',
+                     'x-requested-with']
+
+CORS_ALLOWED_ORIGINS=['http://localhost:5173',
+                      'https://z0mbified-store.onrender.com']
+
+CSRF_TRUSTED_ORIGINS=['http://localhost:5173','https://z0mbified-store.onrender.com']
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
