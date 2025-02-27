@@ -79,7 +79,7 @@ SIMPLE_JWT = {
 }
 
 
-ALLOWED_HOSTS='localhost:5173,z0mbified-store.onrender.com'
+ALLOWED_HOSTS=['localhost:5173','z0mbified-store.onrender.com']
 
 CORS_ALLOW_HEADERS= ['accept',
                      'authorization',

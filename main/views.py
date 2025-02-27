@@ -10,7 +10,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import get_object_or_404
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from .filters import ProductFilter, StoreFilter
@@ -55,11 +55,13 @@ def load_sub_subcategories(request):
 class CategoryViewSet(ReadOnlyModelViewSet):
     queryset = Category.objects.filter(parent__isnull=True)
     serializer_class = CategorySerializer
+    permission_classes = [AllowAny]
 
 
 class HeroImageViewSet(ReadOnlyModelViewSet):
     queryset = HeroImage.objects.filter(active=True).order_by('ordering')
     serializer_class = HeroImageSerializer
+    permission_classes = [AllowAny]
 
 
 
@@ -71,11 +73,13 @@ class ProductViewSet(ReadOnlyModelViewSet):
     filterset_class = ProductFilter
     search_fields = ['name', 'category__name', 'subcategory__name', 'sub_subcategory__name']
     ordering_fields = ['unit_price', 'date_created']
+    permission_classes = [AllowAny]
 
 
 class ProductImageViewSet(ReadOnlyModelViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
+    permission_classes = [AllowAny]
 
 
     def get_queryset(self):
@@ -142,6 +146,7 @@ class StoreViewSet(ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     search_fields = ['name']
     filterset_class = StoreFilter
+    permission_classes = [AllowAny]
 
 
 class StoreReviewViewSet(ModelViewSet):
@@ -379,6 +384,7 @@ class OrderViewSet(ModelViewSet):
 class CategoryImageViewSet(ReadOnlyModelViewSet):
     queryset = CategoryImage.objects.all()
     serializer_class = CategoryImageSerializer
+    permission_classes = [AllowAny]
 
     def get_queryset(self):
         return CategoryImage.objects.filter(category_id=self.kwargs['category_pk'])
