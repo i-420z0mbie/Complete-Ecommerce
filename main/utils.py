@@ -13,19 +13,25 @@ def get_default_store():
 
 
 BUCKETS = {
-    "store_logo": "store-logo",
-    "category_image": "category-image",
-    "hero_image": "hero-image",
-    "product_image": "product-image"
+    "store_logo": "store-logos",
+    "product_image": "product-images",
+    "category_image": "category-images",
 }
 
 
 def upload_to_supabase(file_path, bucket_key):
+    """
+    Uploads a file located at file_path to Supabase Storage using the bucket specified by bucket_key.
+
+    Allowed bucket_key values: "store_logo", "product_image", "category_image".
+    Returns the public URL on success, or None on failure.
+    """
     bucket_name = BUCKETS.get(bucket_key)
     if not bucket_name:
         print("Invalid bucket key provided. Allowed keys are:", list(BUCKETS.keys()))
         return None
 
+    # Read file data
     with open(file_path, "rb") as file:
         file_data = file.read()
 
@@ -40,6 +46,7 @@ def upload_to_supabase(file_path, bucket_key):
     response = requests.put(upload_url, headers=headers, data=file_data)
 
     if response.status_code in (200, 201):
+        # Construct the public URL
         return f"{settings.MEDIA_URL}{bucket_name}/{file_name}"
     else:
         print("Upload failed:", response.text)

@@ -8,12 +8,7 @@ from .views import (CategoryViewSet,
                     CartViewSet, CartItemViewSet, OrderViewSet, StoreOrdersViewSet,
                     HeroImageViewSet, CategoryImageViewSet, PaymentViewSet)
 from . import views
-from .views import (
-    upload_store_logo,
-    upload_category_image,
-    upload_hero_image,
-    upload_product_image,
-)
+
 
 router = routers.DefaultRouter()
 router.register('categories', viewset=CategoryViewSet, basename='categories')
@@ -51,9 +46,6 @@ urlpatterns = [
     path('', include(product_router.urls)),
     path('', include(store_router.urls)),
     path('', include(category_router.urls)),
-    path("upload/store-logo/", upload_store_logo, name="upload_store_logo"),
-    path("upload/category-image/", upload_category_image, name="upload_category_image"),
-    path("upload/hero-image/", upload_hero_image, name="upload_hero_image"),
-    path("upload/product-image/", upload_product_image, name="upload_product_image"),
+
 
 ]

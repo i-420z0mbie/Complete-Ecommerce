@@ -395,7 +395,6 @@ class CategoryImageViewSet(ReadOnlyModelViewSet):
 
 @csrf_exempt
 def upload_store_logo(request):
-
     if request.method == "POST" and request.FILES.get("image") and request.POST.get("store_id"):
         store_id = request.POST.get("store_id")
         try:
@@ -409,7 +408,7 @@ def upload_store_logo(request):
             for chunk in image.chunks():
                 f.write(chunk)
 
-        # Use a dedicated bucket for store logos, e.g., "store-logos"
+        # Use the mapping key "store_logo"
         public_url = upload_to_supabase(temp_path, bucket_key="store_logo")
         os.remove(temp_path)
 
@@ -419,17 +418,11 @@ def upload_store_logo(request):
             return JsonResponse({"success": True, "store_id": store.id, "logo": public_url})
         else:
             return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
-
     return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
 
 
 @csrf_exempt
 def upload_category_image(request):
-    """
-    Expects a POST with:
-      - category_id (in POST data)
-      - image file under key "image"
-    """
     if request.method == "POST" and request.FILES.get("image") and request.POST.get("category_id"):
         category_id = request.POST.get("category_id")
         try:
@@ -443,56 +436,23 @@ def upload_category_image(request):
             for chunk in image.chunks():
                 f.write(chunk)
 
-        # Use a dedicated bucket for category images, e.g., "category-images"
+        # Use the mapping key "category_image"
         public_url = upload_to_supabase(temp_path, bucket_key="category_image")
         os.remove(temp_path)
 
         if public_url:
-            category_image = CategoryImage.objects.create(category=category, image=public_url)
-            return JsonResponse({"success": True, "category_image_id": category_image.id, "image": public_url})
+            # Either update the Category model or create a new CategoryImage record
+            category.image = public_url  # or CategoryImage.objects.create(category=category, image=public_url)
+            category.save()
+            return JsonResponse({"success": True, "category_id": category.id, "image": public_url})
         else:
             return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
-
     return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
 
-
-@csrf_exempt
-def upload_hero_image(request):
-    """
-    Expects a POST with:
-      - Optional: title, description in POST data
-      - Image file under key "image"
-    """
-    if request.method == "POST" and request.FILES.get("image"):
-        image = request.FILES["image"]
-        title = request.POST.get("title", "")
-        description = request.POST.get("description", "")
-
-        temp_path = f"/tmp/{image.name}"
-        with open(temp_path, "wb") as f:
-            for chunk in image.chunks():
-                f.write(chunk)
-
-        # Use a dedicated bucket for hero images, e.g., "hero-images"
-        public_url = upload_to_supabase(temp_path, bucket_key="hero_image")
-        os.remove(temp_path)
-
-        if public_url:
-            hero_image = HeroImage.objects.create(title=title, description=description, image=public_url)
-            return JsonResponse({"success": True, "hero_image_id": hero_image.id, "image": public_url})
-        else:
-            return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
-
-    return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
 
 
 @csrf_exempt
 def upload_product_image(request):
-    """
-    Expects a POST with:
-      - product_id (in POST data)
-      - image file under key "image"
-    """
     if request.method == "POST" and request.FILES.get("image") and request.POST.get("product_id"):
         product_id = request.POST.get("product_id")
         try:
@@ -506,14 +466,14 @@ def upload_product_image(request):
             for chunk in image.chunks():
                 f.write(chunk)
 
-        # Use a dedicated bucket for product images, e.g., "product-images"
+        # Use the mapping key "product_image"
         public_url = upload_to_supabase(temp_path, bucket_key="product_image")
         os.remove(temp_path)
 
         if public_url:
-            product_image = ProductImage.objects.create(product=product, image=public_url)
-            return JsonResponse({"success": True, "product_image_id": product_image.id, "image": public_url})
+            product.image = public_url
+            product.save()
+            return JsonResponse({"success": True, "product_id": product.id, "image": public_url})
         else:
             return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
-
     return JsonResponse({"success": False, "error": "Invalid request."}, status=400)

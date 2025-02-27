@@ -31,8 +31,8 @@ SECRET_KEY = 'django-insecure-!2qcpxi71yk55hwr$x6+x5aa&rgy*ddv30x9gk@akl#rl8#4vs
 DEBUG = False
 
 
-SUPABASE_URL = 'https://sigldbxinywgcbqshykm.supabase.co'
-SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpZ2xkYnhpbnl3Z2NicXNoeWttIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MDYwMjU3NiwiZXhwIjoyMDU2MTc4NTc2fQ.93UuixoNJ5gxKIV7HAKe0XPo8-bE0ds3C5szszf92GY'
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://gscmymdoslbnxbxkdiid.supabase.co")
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzY215bWRvc2xibnhieGtkaWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NzQ0MzEsImV4cCI6MjA1NjI1MDQzMX0.x7ah9AaMShOCvAqYUBlaQ0ZQgNoz1D1I6ltw-x9Exp8")
 
 
 ALLOWED_HOSTS=['*']
