@@ -78,27 +78,11 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
-CORS_ALLOW_ALL_ORIGINS = True
-CORS_ALLOW_CREDENTIALS = True
-
-CORS_ALLOW_HEADERS = (
-    "accept",
-    "authorization",
-    "content-type",
-    "user-agent",
-    "x-csrftoken",
-    "x-requested-with",
-)
-
-
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", "https://z0mbified-store.onrender.com",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173", "https://z0mbified-store.onrender.com",
-]
-
+CORS_ALLOW_ALL_ORIGINS = env.bool('CORS_ALLOW_ALL_ORIGINS')
+CORS_ALLOW_CREDENTIALS = env.bool('CORS_ALLOW_CREDENTIALS')
+CORS_ALLOW_HEADERS = env.list('CORS_ALLOW_HEADERS')
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS')
+CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS')
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
