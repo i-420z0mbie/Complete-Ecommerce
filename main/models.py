@@ -158,7 +158,7 @@ class Product(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name} - {self.unit_price}'
+        return f'{self.name} - {self.unit_price} - {self.is_active}'
 
 
 class ProductImage(models.Model):

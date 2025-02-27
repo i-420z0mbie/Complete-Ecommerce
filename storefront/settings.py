@@ -31,9 +31,21 @@ SECRET_KEY = 'django-insecure-!2qcpxi71yk55hwr$x6+x5aa&rgy*ddv30x9gk@akl#rl8#4vs
 DEBUG = False
 
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "https://gscmymdoslbnxbxkdiid.supabase.co")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdzY215bWRvc2xibnhieGtkaWlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA2NzQ0MzEsImV4cCI6MjA1NjI1MDQzMX0.x7ah9AaMShOCvAqYUBlaQ0ZQgNoz1D1I6ltw-x9Exp8")
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "AKIA5CBDRPM34G6UE2DK")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "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")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "kwabenatimes")
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME", "us-west-2")
 
+# Change to your region
+AWS_S3_CUSTOM_DOMAIN = "{}.s3.amazonaws.com".format(AWS_STORAGE_BUCKET_NAME)
+
+
+
+# Tell Django to use S3 as the default file storage
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+# URL that handles the media served from S3
+MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/"
 
 ALLOWED_HOSTS=['*']
 # Application definition
@@ -46,6 +58,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_filters',
+    'storages',
     'corsheaders',
     'core',
     'payment',
@@ -110,12 +123,8 @@ CORS_ALLOWED_ORIGINS=['http://localhost:5173',
 
 CSRF_TRUSTED_ORIGINS=['http://localhost:5173','https://z0mbified-store.onrender.com', 'https://zombified-store.onrender.com']
 
-supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
-MEDIA_URL = f"{SUPABASE_URL}/storage/v1/object/public/"
-
-
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 
