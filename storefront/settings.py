@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import environ
 from datetime import timedelta
 from pathlib import Path
+import dj_database_url
 from supabase import create_client
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,16 +24,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-!2qcpxi71yk55hwr$x6+x5aa&rgy*ddv30x9gk@akl#rl8#4vs'
-PAYSTACK_SECRET_KEY = 'sk_live_26bcb3ba0cbe0ea6d23232e110cdb8ccd54aaadf'
-PAYSTACK_PUBLIC_KEY = 'pk_live_26a9e211194619bd267d2eb4bd034fd8394d56c6'
-SUPABASE_URL = "https://sigldbxinywgcbqshykm.supabase.co"
-SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNpZ2xkYnhpbnl3Z2NicXNoeWttIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc0MDYwMjU3NiwiZXhwIjoyMDU2MTc4NTc2fQ.93UuixoNJ5gxKIV7HAKe0XPo8-bE0ds3C5szszf92GY"
+env = environ.Env(DEBUG=(bool, False))
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = env('DJANGO_SECRET_KEY')
+DEBUG = env('DEBUG')
+ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
 
-ALLOWED_HOSTS = ['*']
+SUPABASE_URL = env('SUPABASE_URL')
+SUPABASE_KEY = env('SUPABASE_KEY')
 
 
 # Application definition
@@ -61,6 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 
@@ -135,13 +137,14 @@ WSGI_APPLICATION = 'storefront.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'nicely',  # your database name
-        'USER': 'postgres',    # the MySQL user
-        'PASSWORD': 'Attackontitan420@',  # the new password you set
-        'HOST': 'localhost',
+        'NAME': 'z0mbie_596g',
+        'USER': 'z0mbie_596g_user',
+        'PASSWORD': 'Wn3fEquon3IOeMEpA9LmG0y6Ss06KnBv',
+        'HOST': 'dpg-cv014c5svqrc73agi8h0-a.oregon-postgres.render.com',
         'PORT': '5432',
     }
 }
+
 
 
 
@@ -179,10 +182,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'static/'
-
-# Ensure STATIC_ROOT is set correctly
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Change 'staticfiles' to any folder you prefer
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
