@@ -24,17 +24,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-env = environ.Env(DEBUG=(bool, False))
+env = environ.Env(DEBUG=(bool, True))
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 
-SECRET_KEY = env('DJANGO_SECRET_KEY')
-DEBUG = env('DEBUG')
-# ALLOWED_HOSTS = env('ALLOWED_HOSTS').split(',')
+SECRET_KEY = 'django-insecure-!2qcpxi71yk55hwr$x6+x5aa&rgy*ddv30x9gk@akl#rl8#4vs'
+DEBUG = False
+
 
 SUPABASE_URL = env('SUPABASE_URL')
 SUPABASE_KEY = env('SUPABASE_KEY')
 
-
+ALLOWED_HOSTS=['*']
 # Application definition
 
 INSTALLED_APPS = [
@@ -82,19 +82,32 @@ SIMPLE_JWT = {
 }
 
 
-ALLOWED_HOSTS=['localhost:5173','z0mbified-store.onrender.com']
 
-CORS_ALLOW_HEADERS= ['accept',
-                     'authorization',
-                     'content-type',
-                     'user-agent',
-                     'x-csrftoken',
-                     'x-requested-with']
+
+
+CORS_ALLOW_HEADERS = [
+    "authorization",
+    "content-type",
+    "x-csrftoken",
+    "x-requested-with",
+]
+
+
+
+CORS_ALLOW_METHODS = [
+    "GET",
+    "POST",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS"
+]
 
 CORS_ALLOWED_ORIGINS=['http://localhost:5173',
-                      'https://z0mbified-store.onrender.com']
+                      'https://z0mbified-store.onrender.com',
+                      'https://zombified-store.onrender.com']
 
-CSRF_TRUSTED_ORIGINS=['http://localhost:5173','https://z0mbified-store.onrender.com']
+CSRF_TRUSTED_ORIGINS=['http://localhost:5173','https://z0mbified-store.onrender.com', 'https://zombified-store.onrender.com']
 
 supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
 
