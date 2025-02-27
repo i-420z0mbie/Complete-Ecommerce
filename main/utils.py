@@ -13,15 +13,14 @@ def get_default_store():
 
 
 BUCKETS = {
-    "store_logo": "store-logos",
-    "category_image": "category-images",
-    "hero_image": "hero-images",
-    "product_image": "product-images"
+    "store_logo": "store-logo",
+    "category_image": "category-image",
+    "hero_image": "hero-image",
+    "product_image": "product-image"
 }
 
 
 def upload_to_supabase(file_path, bucket_key):
-
     bucket_name = BUCKETS.get(bucket_key)
     if not bucket_name:
         print("Invalid bucket key provided. Allowed keys are:", list(BUCKETS.keys()))
@@ -45,3 +44,4 @@ def upload_to_supabase(file_path, bucket_key):
     else:
         print("Upload failed:", response.text)
         return None
+
