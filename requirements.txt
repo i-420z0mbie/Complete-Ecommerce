@@ -22,3 +22,4 @@ urllib3==2.3.0
 whitenoise==6.9.0
 supabase==2.13.0
 django-storages==1.1.8
+python-dotenv~=1.0.1

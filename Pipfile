@@ -12,6 +12,7 @@ django-filter = "*"
 psycopg2-binary = "*"
 django-environ = "*"
 supabase = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
