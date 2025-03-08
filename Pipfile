@@ -13,6 +13,7 @@ psycopg2-binary = "*"
 django-environ = "*"
 supabase = "*"
 python-dotenv = "*"
+djoser = "*"
 
 [dev-packages]
 

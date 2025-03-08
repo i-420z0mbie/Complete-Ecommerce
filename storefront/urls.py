@@ -12,8 +12,9 @@ from main.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('core.urls')),
     path('store/', include('main.urls')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path('', include('payment.urls')),
     path("upload/store-logo/", upload_store_logo, name="upload_store_logo"),
     path("upload/category-image/", upload_category_image, name="upload_category_image"),
