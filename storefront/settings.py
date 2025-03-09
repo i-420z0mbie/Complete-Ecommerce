@@ -112,6 +112,10 @@ EMAIL_HOST_USER = 'support@naomall.com'
 EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = 'support@naomall.com'
+SUPPORT_EMAIL = 'support@naomall.com'
+
+
+
 
 
 CORS_ALLOW_HEADERS = [

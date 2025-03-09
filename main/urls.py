@@ -42,6 +42,7 @@ urlpatterns = [
 
     path('ajax/load-subcategories/', views.load_subcategories, name='ajax_load_subcategories'),
     path('ajax/load-sub-subcategories/', views.load_sub_subcategories, name='ajax_load_sub_subcategories'),
+    path('api/send_complaint/', views.send_complaint, name='send_complaint'),
     path('', include(router.urls)),
     path('', include(product_router.urls)),
     path('', include(store_router.urls)),

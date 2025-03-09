@@ -24,7 +24,11 @@ from .serializers import (CategorySerializer, ProductSerializer,
                           PaymentSerializer, CartSerializer, CartItemSerializer,
                           OrderSerializer, OrderItemSerializer, HeroImageSerializer, CategoryImageSerializer)
 
-
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from rest_framework import status
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 
@@ -477,3 +481,36 @@ def upload_product_image(request):
         else:
             return JsonResponse({"success": False, "error": "Upload failed."}, status=500)
     return JsonResponse({"success": False, "error": "Invalid request."}, status=400)
+
+
+@api_view(['POST'])
+def send_complaint(request):
+    # Extract email and complaint from the request
+    email = request.data.get('email')
+    complaint = request.data.get('complaint')
+
+    if not email or not complaint:
+        return Response(
+            {'error': 'Both email and complaint message are required.'},
+            status=status.HTTP_400_BAD_REQUEST
+        )
+
+    subject = "User Complaint / Forgot Password Request"
+    message = f"User Email: {email}\n\nMessage:\n{complaint}"
+
+
+    try:
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            [settings.SUPPORT_EMAIL],
+            fail_silently=False,
+        )
+    except Exception as e:
+        return Response(
+            {'error': f"An error occurred while sending the email: {str(e)}"},
+            status=status.HTTP_500_INTERNAL_SERVER_ERROR
+        )
+
+    return Response({'message': 'Your request has been sent successfully.'}, status=status.HTTP_200_OK)
