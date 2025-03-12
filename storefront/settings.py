@@ -137,8 +137,7 @@ CORS_ALLOW_METHODS = [
 ]
 
 CORS_ALLOWED_ORIGINS=['http://localhost:5173',
-                      'https://z0mbified-store.onrender.com',
-                      'https://zombified-store.onrender.com']
+                      ]
 
 CSRF_TRUSTED_ORIGINS=['http://localhost:5173','https://z0mbified-store.onrender.com', 'https://zombified-store.onrender.com']
 
